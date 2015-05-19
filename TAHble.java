@@ -14,6 +14,7 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -33,6 +34,7 @@ import util.Constant;
  * Service for managing connection and data communication with a GATT server hosted on a
  * given Bluetooth LE device.
  */
+
 public class TAHble extends Service {
     //////////////////ASCII CONSTANT/////////////////
     //key press
@@ -201,6 +203,7 @@ public class TAHble extends Service {
      * {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
      * callback.
      */
+
     public boolean connect(final String address) {
         if (mBluetoothAdapter == null || address == null) {
             Log.w(TAG, "BluetoothAdapter not initialized or unspecified address.");
@@ -513,6 +516,19 @@ public class TAHble extends Service {
             return false;
         }
 
+    }
+
+  ////////////////TAH RGB//////////////////////
+    public boolean TahRGB (String RGB){
+        try {
+            BluetoothGattService mBluetoothGattService = mBluetoothGatt.getService(UUID.fromString(Constant.ServiceUid));
+            BluetoothGattCharacteristic characteristic = mBluetoothGattService.getCharacteristic(UUID.fromString(Constant.CharaUid));
+            characteristic.setValue(RGB);
+            return mBluetoothGatt.writeCharacteristic(characteristic);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 ////////////////////////// We need to add following code in Activity or Fragment to get the broadcast data () i.e broadcast receiver /////////////////////////
 //////////intent filter////////////
