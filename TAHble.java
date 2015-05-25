@@ -2,6 +2,7 @@
 
 package bleservice;
 
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -30,11 +31,12 @@ import util.Constant;
  //  All rights reserved.
 
  */
+
 /**
  * Service for managing connection and data communication with a GATT server hosted on a
  * given Bluetooth LE device.
  */
-
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class TAHble extends Service {
     //////////////////ASCII CONSTANT/////////////////
     //key press
@@ -48,7 +50,6 @@ public class TAHble extends Service {
     public static int Down = 257;
     public static int Right = 258;
     public static int Left = 259;
-
 
 
     private final static String TAG = TAHble.class.getSimpleName();
@@ -143,7 +144,6 @@ public class TAHble extends Service {
         //using get string value
         String strdata = characteristic.getStringValue(0);
         intent.putExtra(EXTRA_DATA, new String(strdata));
-
         sendBroadcast(intent);
     }
 
@@ -203,7 +203,7 @@ public class TAHble extends Service {
      * {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
      * callback.
      */
-
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public boolean connect(final String address) {
         if (mBluetoothAdapter == null || address == null) {
             Log.w(TAG, "BluetoothAdapter not initialized or unspecified address.");
@@ -518,8 +518,8 @@ public class TAHble extends Service {
 
     }
 
-  ////////////////TAH RGB//////////////////////
-    public boolean TahRGB (String RGB){
+    ////////////////TAH RGB//////////////////////
+    public boolean TahRGB(String RGB) {
         try {
             BluetoothGattService mBluetoothGattService = mBluetoothGatt.getService(UUID.fromString(Constant.ServiceUid));
             BluetoothGattCharacteristic characteristic = mBluetoothGattService.getCharacteristic(UUID.fromString(Constant.CharaUid));
@@ -530,6 +530,240 @@ public class TAHble extends Service {
             return false;
         }
     }
+
+    ///////////////TAH SENSOR//////////////////
+
+    //here we need to set notification true to get data (sensor data )from TAH
+
+    // Sonar Sensor
+    public boolean getTAHSonarSensorUpdate(int SensorPin) {
+        try {
+
+            String str1 = "0," + SensorPin + "S";
+            // String str1 = "0,2S";
+            //String str1 = "1,410S";
+
+            BluetoothGattService mBluetoothGattService = mBluetoothGatt.getService(UUID.fromString(Constant.ServiceUid));
+            BluetoothGattCharacteristic characteristic = mBluetoothGattService.getCharacteristic(UUID.fromString(Constant.CharaUid));
+            mBluetoothGatt.setCharacteristicNotification(characteristic, true);
+            characteristic.setValue(str1);
+            return mBluetoothGatt.writeCharacteristic(characteristic);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Temparature Sensor
+    public boolean getTAHTemperatureSensorUpdate(int AnalogPin) {
+        try {
+
+
+            int SensorPin = 0;
+
+            if (SensorPin == 0) {
+                SensorPin = 410;
+            } else if (SensorPin == 1) {
+                SensorPin = 411;
+            } else if (SensorPin == 2) {
+                SensorPin = 412;
+            } else if (SensorPin == 3) {
+                SensorPin = 413;
+            } else if (SensorPin == 4) {
+                SensorPin = 414;
+            } else if (SensorPin == 5) {
+                SensorPin = 415;
+            }
+
+            String str1 = "1," + SensorPin + "S";
+
+            BluetoothGattService mBluetoothGattService = mBluetoothGatt.getService(UUID.fromString(Constant.ServiceUid));
+            BluetoothGattCharacteristic characteristic = mBluetoothGattService.getCharacteristic(UUID.fromString(Constant.CharaUid));
+            mBluetoothGatt.setCharacteristicNotification(characteristic, true);
+            characteristic.setValue(str1);
+            return mBluetoothGatt.writeCharacteristic(characteristic);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Touch Sensor
+    public boolean getTAHTouchSensorUpdate(int SensorPin) {
+        try {
+
+            String str1 = "2," + SensorPin + "S";
+            // String str1 = "0,2S";
+            //String str1 = "1,410S";
+
+            BluetoothGattService mBluetoothGattService = mBluetoothGatt.getService(UUID.fromString(Constant.ServiceUid));
+            BluetoothGattCharacteristic characteristic = mBluetoothGattService.getCharacteristic(UUID.fromString(Constant.CharaUid));
+            mBluetoothGatt.setCharacteristicNotification(characteristic, true);
+            characteristic.setValue(str1);
+            return mBluetoothGatt.writeCharacteristic(characteristic);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //Light Sensor
+
+    public boolean getTAHLightSensorUpdate(int AnalogPin) {
+        try {
+
+
+            int SensorPin = 0;
+
+            if (SensorPin == 0) {
+                SensorPin = 410;
+            } else if (SensorPin == 1) {
+                SensorPin = 411;
+            } else if (SensorPin == 2) {
+                SensorPin = 412;
+            } else if (SensorPin == 3) {
+                SensorPin = 413;
+            } else if (SensorPin == 4) {
+                SensorPin = 414;
+            } else if (SensorPin == 5) {
+                SensorPin = 415;
+            }
+
+            String str1 = "3," + SensorPin + "S";
+
+            BluetoothGattService mBluetoothGattService = mBluetoothGatt.getService(UUID.fromString(Constant.ServiceUid));
+            BluetoothGattCharacteristic characteristic = mBluetoothGattService.getCharacteristic(UUID.fromString(Constant.CharaUid));
+            mBluetoothGatt.setCharacteristicNotification(characteristic, true);
+            characteristic.setValue(str1);
+            return mBluetoothGatt.writeCharacteristic(characteristic);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //Rain Sensor
+
+    public boolean getTAHRainSensorUpdate(int AnalogPin) {
+        try {
+
+
+            int SensorPin = 0;
+
+            if (SensorPin == 0) {
+                SensorPin = 410;
+            } else if (SensorPin == 1) {
+                SensorPin = 411;
+            } else if (SensorPin == 2) {
+                SensorPin = 412;
+            } else if (SensorPin == 3) {
+                SensorPin = 413;
+            } else if (SensorPin == 4) {
+                SensorPin = 414;
+            } else if (SensorPin == 5) {
+                SensorPin = 415;
+            }
+
+            String str1 = "4," + SensorPin + "S";
+
+            BluetoothGattService mBluetoothGattService = mBluetoothGatt.getService(UUID.fromString(Constant.ServiceUid));
+            BluetoothGattCharacteristic characteristic = mBluetoothGattService.getCharacteristic(UUID.fromString(Constant.CharaUid));
+            mBluetoothGatt.setCharacteristicNotification(characteristic, true);
+            characteristic.setValue(str1);
+            return mBluetoothGatt.writeCharacteristic(characteristic);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //Wind Sensor
+
+    public boolean getTAHWindSensorUpdate(int AnalogPin) {
+        try {
+
+
+            int SensorPin = 0;
+
+            if (SensorPin == 0) {
+                SensorPin = 410;
+            } else if (SensorPin == 1) {
+                SensorPin = 411;
+            } else if (SensorPin == 2) {
+                SensorPin = 412;
+            } else if (SensorPin == 3) {
+                SensorPin = 413;
+            } else if (SensorPin == 4) {
+                SensorPin = 414;
+            } else if (SensorPin == 5) {
+                SensorPin = 415;
+            }
+
+            String str1 = "5," + SensorPin + "S";
+
+            BluetoothGattService mBluetoothGattService = mBluetoothGatt.getService(UUID.fromString(Constant.ServiceUid));
+            BluetoothGattCharacteristic characteristic = mBluetoothGattService.getCharacteristic(UUID.fromString(Constant.CharaUid));
+            mBluetoothGatt.setCharacteristicNotification(characteristic, true);
+            characteristic.setValue(str1);
+            return mBluetoothGatt.writeCharacteristic(characteristic);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // PIR Motion Sensor
+
+    public boolean getTAHPIRMotionSensorUpdate(int SensorPin) {
+        try {
+            String str1 = "6," + SensorPin + "S";
+            BluetoothGattService mBluetoothGattService = mBluetoothGatt.getService(UUID.fromString(Constant.ServiceUid));
+            BluetoothGattCharacteristic characteristic = mBluetoothGattService.getCharacteristic(UUID.fromString(Constant.CharaUid));
+            mBluetoothGatt.setCharacteristicNotification(characteristic, true);
+            characteristic.setValue(str1);
+            return mBluetoothGatt.writeCharacteristic(characteristic);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Soil Moisture Sensor
+
+    public boolean getTAHSoilMoistureSensorUpdate(int AnalogPin) {
+        try {
+
+
+            int SensorPin = 0;
+
+            if (SensorPin == 0) {
+                SensorPin = 410;
+            } else if (SensorPin == 1) {
+                SensorPin = 411;
+            } else if (SensorPin == 2) {
+                SensorPin = 412;
+            } else if (SensorPin == 3) {
+                SensorPin = 413;
+            } else if (SensorPin == 4) {
+                SensorPin = 414;
+            } else if (SensorPin == 5) {
+                SensorPin = 415;
+            }
+
+            String str1 = "7," + SensorPin + "S";
+
+            BluetoothGattService mBluetoothGattService = mBluetoothGatt.getService(UUID.fromString(Constant.ServiceUid));
+            BluetoothGattCharacteristic characteristic = mBluetoothGattService.getCharacteristic(UUID.fromString(Constant.CharaUid));
+            mBluetoothGatt.setCharacteristicNotification(characteristic, true);
+            characteristic.setValue(str1);
+            return mBluetoothGatt.writeCharacteristic(characteristic);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 ////////////////////////// We need to add following code in Activity or Fragment to get the broadcast data () i.e broadcast receiver /////////////////////////
 //////////intent filter////////////
 //    private static IntentFilter makeGattUpdateIntentFilter() {
@@ -542,7 +776,7 @@ public class TAHble extends Service {
 //        return intentFilter;
 //    }
 
- ////////////Receiver here//////////
+    ////////////Receiver here//////////
 //    // Handles various events fired by the Service.
 //    // ACTION_GATT_CONNECTED: connected to a GATT server.
 //    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
