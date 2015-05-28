@@ -559,7 +559,7 @@ public class TAHble extends Service {
         try {
 
 
-            int SensorPin = 0;
+            int SensorPin = AnalogPin;
 
             if (SensorPin == 0) {
                 SensorPin = 410;
@@ -613,7 +613,7 @@ public class TAHble extends Service {
         try {
 
 
-            int SensorPin = 0;
+            int SensorPin = AnalogPin;
 
             if (SensorPin == 0) {
                 SensorPin = 410;
@@ -648,7 +648,7 @@ public class TAHble extends Service {
         try {
 
 
-            int SensorPin = 0;
+            int SensorPin = AnalogPin;
 
             if (SensorPin == 0) {
                 SensorPin = 410;
@@ -683,7 +683,7 @@ public class TAHble extends Service {
         try {
 
 
-            int SensorPin = 0;
+            int SensorPin = AnalogPin;
 
             if (SensorPin == 0) {
                 SensorPin = 410;
@@ -734,7 +734,7 @@ public class TAHble extends Service {
         try {
 
 
-            int SensorPin = 0;
+            int SensorPin = AnalogPin;
 
             if (SensorPin == 0) {
                 SensorPin = 410;
